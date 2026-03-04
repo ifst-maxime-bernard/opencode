@@ -2,6 +2,9 @@
   "$schema": "https://opencode.ai/config.json",
   "default_agent": "manager",
   "autoupdate": "notify",
+  "instructions": [
+    ".opencode/rules/*.md"
+  ],
   "model": "github-copilot/gemini-3-flash-preview",
   "small_model": "github-copilot/gemini-3-flash-preview",
   "formatter": {
