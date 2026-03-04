@@ -1,0 +1,33 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "manager",
+  "autoupdate": "notify",
+  "model": "github-copilot/gemini-3-flash-preview",
+  "small_model": "github-copilot/gemini-3-flash-preview",
+  "formatter": {
+    "php": {
+      "command": ["ddev", "php", "vendor/bin/php-cs-fixer", "fix", "$FILE"],
+      "extensions": [".php"]
+    }
+  },
+  "mcp": {
+    "zoho": {
+      "type": "remote",
+      "url": "{env:ZOHO_MCP_URL}",
+      "enabled": true
+    },
+    "sentry": {
+      "type": "remote",
+      "url": "https://mcp.sentry.dev/mcp",
+      "enabled": true
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+      },
+      "enabled": true
+    }
+  }
+}

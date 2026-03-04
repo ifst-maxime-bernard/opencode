@@ -1,0 +1,158 @@
+{
+  // Dynamic Context Pruning (DCP) — OpenCode configuration
+  // Doc: https://github.com/Opencode-DCP/opencode-dynamic-context-pruning
+  //
+  // STRATEGY OVERVIEW
+  // -----------------
+  // This project runs 9 specialised subagents (manager, architect, coder, devops,
+  // refactor, reviewer, security, tester, docs) each with a substantial system prompt
+  // (~500-900 tokens). Long sessions accumulate:
+  //   - Tool call results (file reads, bash output, grep results)
+  //   - Intermediate agent reasoning turns
+  //   - Repeated context blocks (shared-guidelines, security-checkpoints…)
+  //
+  // Goals:
+  //   1. Keep the working context under model limits (Sonnet: 200k, GPT-5: 128k).
+  //   2. Preserve anchors: system prompt, first user turn, pinned instructions.
+  //   3. Evict the "cold middle" (old tool outputs, superseded reasoning) first.
+  //   4. Never drop the last N turns to maintain conversational coherence.
+  //
+  "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
+
+  // ── GLOBAL TOKEN BUDGET ──────────────────────────────────────────────────────
+  // Start pruning when the conversation history (excluding the live system prompt)
+  // exceeds this threshold. Chosen conservatively so all agents stay well below
+  // their model's context window even after adding a large file read (~4k tokens).
+  "maxHistoryTokens": 5000,
+
+  // Hard ceiling: if pruning cannot bring the total below this, truncate aggressively.
+  // Set at 2× maxHistoryTokens to act as an absolute safety net.
+  "hardLimitTokens": 10000,
+
+  // ── RECENCY GUARD — never evict the N most recent messages ──────────────────
+  // Keeps at minimum the last 12 messages intact regardless of token count.
+  // Rationale: a typical agentic turn = user → tool call → tool result → assistant
+  // reply = 4 messages. Protecting 12 messages = ~3 full agentic turns, which is
+  // the minimum to maintain coherent short-term working memory.
+  "keepLastMessages": 12,
+
+  // ── ANCHOR PROTECTION — messages that must NEVER be evicted ─────────────────
+  "anchors": {
+    // Always preserve the system prompt injected by each agent's .md frontmatter.
+    // This contains role definition, tool permissions, and project conventions.
+    "systemMessages": true,
+
+    // Always preserve the very first user message of the session.
+    // It typically contains the task brief, file paths, or acceptance criteria
+    // that all subsequent work refers back to.
+    "firstUserMessage": true,
+
+    // Preserve messages explicitly marked by the user with a pin keyword.
+    // Usage: start a message with [PIN] to anchor it permanently.
+    "pinnedMessages": true,
+    "pinKeyword": "[PIN]"
+  },
+
+  // ── EVICTION POLICY — what to remove first ──────────────────────────────────
+  "eviction": {
+    // Eviction order (first = evicted first):
+    //   1. tool_result  — bash/read/grep output ages quickly; often superseded.
+    //   2. tool_call    — the corresponding request loses value once the result is gone.
+    //   3. assistant    — intermediate reasoning turns (not the latest response).
+    //   4. user         — only non-anchor user turns (never first message, never pinned).
+    //
+    // Pairs are evicted atomically: a tool_call and its tool_result are always
+    // removed together to avoid orphaned references in the context.
+    "order": ["tool_result", "tool_call", "assistant", "user"],
+    "evictToolCallPairsAtomically": true,
+
+    // Minimum age (in turns from current) before a message becomes eviction-eligible.
+    // A turn = one complete user↔assistant exchange. Setting this to 3 means the
+    // 3 most recent exchanges are never candidates for eviction (complements keepLastMessages).
+    "minAgeInTurns": 3,
+
+    // Large tool outputs (file reads, test results, grep dumps) are the biggest
+    // token consumers. Truncate them to this many tokens before evicting fully,
+    // so a summary remains in context.
+    "truncateToolResultsToTokens": 300
+  },
+
+  // ── SUMMARISATION — compress instead of delete ───────────────────────────────
+  // When a block of messages is evicted, optionally insert a compressed summary
+  // in its place so agents retain awareness of past decisions without the full text.
+  "summarisation": {
+    "enabled": true,
+
+    // Only summarise assistant turns; tool I/O is too noisy to summarise usefully.
+    "summariseRoles": ["assistant"],
+
+    // Maximum tokens for the injected summary placeholder.
+    "maxSummaryTokens": 150,
+
+    // Template injected as a system message in place of evicted content.
+    // {count} = number of evicted messages, {topics} = auto-extracted key topics.
+    "summaryTemplate": "[Context pruned: {count} earlier messages removed. Key topics covered: {topics}. Full history available in git log if needed.]"
+  },
+
+  // ── PER-AGENT OVERRIDES ──────────────────────────────────────────────────────
+  // Some agents work with inherently larger payloads and need tighter budgets.
+  "agents": {
+    // coder: produces and reads large PHP files (maxTokens: 16384 in agent config).
+    // Tighter history budget to leave room for file contents in the active turn.
+    "coder": {
+      "maxHistoryTokens": 4000,
+      "keepLastMessages": 10
+    },
+
+    // architect: read-only, verbose reasoning. Slightly larger history is fine
+    // because it never runs bash or writes files (no large tool results).
+    "architect": {
+      "maxHistoryTokens": 6000,
+      "keepLastMessages": 14
+    },
+
+    // reviewer / security: need enough context to track what changed across turns.
+    "reviewer": {
+      "maxHistoryTokens": 5000,
+      "keepLastMessages": 12
+    },
+    "security": {
+      "maxHistoryTokens": 5000,
+      "keepLastMessages": 12
+    },
+
+    // manager: pure delegation, no tool results, very light token footprint.
+    // Generous limit; in practice it rarely approaches it.
+    "manager": {
+      "maxHistoryTokens": 3000,
+      "keepLastMessages": 8
+    },
+
+    // devops: heavy bash output (ddev logs, docker inspect, CI YAML).
+    // Aggressive truncation of tool results.
+    "devops": {
+      "maxHistoryTokens": 4500,
+      "keepLastMessages": 12,
+      "eviction": {
+        "truncateToolResultsToTokens": 200
+      }
+    },
+
+    // tester: PHPUnit output can be very long; truncate early.
+    "tester": {
+      "maxHistoryTokens": 4000,
+      "keepLastMessages": 10,
+      "eviction": {
+        "truncateToolResultsToTokens": 200
+      }
+    }
+  },
+
+  // ── DEBUG / OBSERVABILITY ────────────────────────────────────────────────────
+  // Append a one-line pruning event to the session log for post-mortem analysis.
+  // Does NOT affect agent behaviour; pure observability.
+  "logging": {
+    "logPruningEvents": true,
+    "logLevel": "info"
+  }
+}
