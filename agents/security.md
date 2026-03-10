@@ -1,7 +1,7 @@
 ---
 description: Security auditor for Symfony PHP projects. Performs OWASP checks and dependency scans. Read-only.
 mode: subagent
-model: github-copilot/gpt-5.1-codex
+model: github-copilot/gpt-5.3-codex
 temperature: 0.1
 maxTokens: 8192
 tools:

@@ -1,7 +1,7 @@
 ---
 description: Analyzes Symfony architecture, proposes design patterns, service wiring, and reviews config. Read-only.
 mode: subagent
-model: github-copilot/gpt-5.1-codex
+model: github-copilot/gpt-5.3-codex
 temperature: 0.2
 maxTokens: 8192
 tools:

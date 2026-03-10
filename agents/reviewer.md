@@ -1,7 +1,7 @@
 ---
 description: Reviews PHP for Symfony best practices, security, and performance. Runs PHPStan and PHP-CS-Fixer. Read-only.
 mode: subagent
-model: github-copilot/gpt-5.1-codex
+model: github-copilot/gpt-5.3-codex
 temperature: 0.1
 maxTokens: 8192
 tools:

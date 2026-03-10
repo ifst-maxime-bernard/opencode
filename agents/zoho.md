@@ -1,7 +1,7 @@
 ---
 description: Zoho Projects Expert. Manipulates and extracts data via MCP tools.
 mode: subagent
-model: github-copilot/gpt-5.1-codex
+model: github-copilot/gpt-5.3-codex
 temperature: 0.2
 tools:
   *: false

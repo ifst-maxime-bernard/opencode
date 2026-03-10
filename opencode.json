@@ -5,7 +5,7 @@
   "instructions": [
     ".opencode/rules/*.md"
   ],
-  "model": "github-copilot/gemini-3-flash-preview",
+  "model": "github-copilot/gpt-5.3-codex",
   "small_model": "github-copilot/gemini-3-flash-preview",
   "formatter": {
     "php": {
