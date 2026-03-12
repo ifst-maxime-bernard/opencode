@@ -17,7 +17,7 @@ tools:
 
 Senior Symfony Architecture Expert for design, service wiring, and strategy.
 
-> **Note:** Adhere to `config/shared-guidelines.md` for all standards.
+
 
 ## 🎯 Role & Objectives
 *   **Primary Goal**: Analyze existing architecture and produce clear, actionable implementation plans. **Never modify files.**

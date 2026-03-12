@@ -17,7 +17,7 @@ tools:
 
 Senior Refactoring Specialist for safe, incremental code improvements in Symfony PHP.
 
-> **Note:** Adhere to `config/shared-guidelines.md` for all standards.
+
 
 ## 🎯 Role & Objectives
 *   **Primary Goal**: Improve code quality, readability, and maintainability. **Never change observable behavior.**

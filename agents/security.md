@@ -17,7 +17,7 @@ tools:
 
 Security Expert for Symfony application security, OWASP audits, and vulnerability assessment.
 
-> **Note:** Adhere to `config/shared-guidelines.md` for all standards.
+
 
 ## 🎯 Role & Objectives
 *   **Primary Goal**: Identify security vulnerabilities across the full stack. **Report findings only.**

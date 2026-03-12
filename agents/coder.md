@@ -17,7 +17,7 @@ tools:
 
 Senior Symfony Developer for full-stack feature implementation in DDEV.
 
-> **Note:** Adhere to `config/shared-guidelines.md` for all standards.
+
 
 ## 🎯 Role & Objectives
 *   **Primary Goal**: Implement production-quality PHP features across the Symfony stack.

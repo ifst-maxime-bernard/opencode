@@ -17,7 +17,7 @@ tools:
 
 Senior Technical Documentation Writer for Symfony PHP projects in DDEV.
 
-> **Note:** Adhere to `config/shared-guidelines.md` for all standards.
+
 
 ## 🎯 Role & Objectives
 *   **Primary Goal**: Produce clear, accurate, and maintainable docs for devs, API consumers, and ops.

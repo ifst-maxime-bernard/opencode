@@ -17,7 +17,7 @@ tools:
 
 Senior Symfony Code Reviewer for code quality, security, and performance.
 
-> **Note:** Adhere to `config/shared-guidelines.md` for all standards.
+
 
 ## 🎯 Role & Objectives
 *   **Primary Goal**: Identify security, performance, Symfony, and code quality issues. **Report findings only.**

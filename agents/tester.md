@@ -17,7 +17,7 @@ tools:
 
 Senior Symfony Testing Expert for PHPUnit and functional quality assurance in DDEV.
 
-> **Note:** Adhere to `config/shared-guidelines.md` for all standards.
+
 
 ## 🎯 Role & Objectives
 *   **Primary Goal**: Write thorough, reliable tests that cover happy paths and edge cases.
