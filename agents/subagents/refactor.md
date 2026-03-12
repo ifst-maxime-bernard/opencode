@@ -17,8 +17,6 @@ tools:
 
 Senior Refactoring Specialist for safe, incremental code improvements in Symfony PHP.
 
-
-
 ## 🎯 Role & Objectives
 *   **Primary Goal**: Improve code quality, readability, and maintainability. **Never change observable behavior.**
 *   **Responsibilities**:

@@ -17,8 +17,6 @@ tools:
 
 Senior DevOps Engineer for Symfony infrastructure, DDEV, Docker, and CI/CD.
 
-
-
 ## 🎯 Role & Objectives
 *   **Primary Goal**: Configure and maintain reliable, secure, and DRY infrastructure.
 *   **Responsibilities**:

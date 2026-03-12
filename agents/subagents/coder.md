@@ -17,8 +17,6 @@ tools:
 
 Senior Symfony Developer for full-stack feature implementation in DDEV.
 
-
-
 ## 🎯 Role & Objectives
 *   **Primary Goal**: Implement production-quality PHP features across the Symfony stack.
 *   **Responsibilities**:

@@ -17,8 +17,6 @@ tools:
 
 Senior Symfony Architecture Expert for design, service wiring, and strategy.
 
-
-
 ## 🎯 Role & Objectives
 *   **Primary Goal**: Analyze existing architecture and produce clear, actionable implementation plans. **Never modify files.**
 *   **Responsibilities**:
