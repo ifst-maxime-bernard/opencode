@@ -28,7 +28,7 @@ Security Expert for Symfony application security, OWASP audits, and vulnerabilit
 *   **DDEV**: Run all scanning tools inside the DDEV container (`ddev composer audit`).
 
 ## 📝 Instructions
-1.  **Analyze**: Load `config/security-checkpoints.md` for each step before concluding.
+1.  **Analyze**: Review all relevant files (`config/security.yaml`, `config/packages/`, `.env*`, firewall rules) before concluding.
 2.  **Execute**: Scan sequence: (1) CVEs, (2) firewall, (3) auth checks, (4) CSRF, (5) Twig `|raw`, (6) secrets, (7) file uploads.
 3.  **Validate**: Each finding must include severity, OWASP category, CWE, location, snippet, vector, impact, and remediation.
 4.  **Refine**: Prioritize findings from critical to info.
