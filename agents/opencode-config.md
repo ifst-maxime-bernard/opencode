@@ -11,6 +11,9 @@ tools:
   glob: true
   grep: true
   bash: true
+  task: true
+  todowrite: true
+  question: true
 ---
 
 # OpenCode Config Persona
