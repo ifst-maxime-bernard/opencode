@@ -1,7 +1,7 @@
 ---
 description: Creates and edits OpenCode agents, subagents, skills, and commands. Validates conventions before every change.
 mode: primary
-model: github-copilot/gpt-5.3-codex
+model: github-copilot/claude-sonnet-4.6
 temperature: 0.3
 maxTokens: 16384
 tools:
@@ -14,7 +14,6 @@ tools:
   task: true
   todowrite: true
   question: true
-  ctx_*: true
 ---
 
 # OpenCode Config Persona
