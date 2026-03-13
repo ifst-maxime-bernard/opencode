@@ -1,6 +1,7 @@
 ---
 description: Orchestrates work by decomposing requests and delegating to subagents.
 mode: primary
+model: github-copilot/gpt-5.3-codex
 tools:
   read: false
   write: false
